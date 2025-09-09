@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Alrededor de los EE.UU." />
+    <meta name="author" content="Natali Carrion" />
+    <meta name="keywords" content="html, css, javascript" />
+
+    <title>Alrededor de los EE.UU.</title>
+
+    <link
+      rel="preload"
+      href="./vendor/fonts/Inter-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="./vendor/fonts/Inter-Black.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="./vendor/normalize.css" />
+    <link rel="stylesheet" href="./vendor/font.css" />
+    <link rel="stylesheet" href="./page/index.css" />
+
+    <link rel="icon" href="favicon.ico" />
+  </head>
+  <body>
+    <div class="page">
+      <div class="popup" aria-hidden="true">
+        <div
+          class="popup__container"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Ventana emergente"
+        >
+          <button
+            type="button"
+            class="popup__button popup__button_close"
+            aria-label="Cerrar ventana"
+          >
+            ✖
+          </button>
+
+          <div class="popup__images">
+            <div class="popup__content-image">
+              <img
+                class="popup__image"
+                src="./images/valle-yosemite.jpg"
+                alt="Imagen ampliada del lugar"
+              />
+            </div>
+
+            <div class="popup__paragraph-content">
+              <p class="popup__paragraph">Descripción del lugar</p>
+            </div>
+          </div>
+
+          <form class="popup__form form-edit" novalidate>
+            <h2 class="popup__subtitle">Editar perfil</h2>
+            <fieldset class="popup__content">
+              <label class="popup__field">
+                <input
+                  type="text"
+                  class="popup__input popup__input_name"
+                  placeholder="Nombre"
+                  minlength="2"
+                  maxlength="40"
+                  id="name-input"
+                  required
+                  aria-label="Nombre"
+                />
+                <span
+                  class="popup__input-error name-input-error"
+                  id="name-input-error"
+                ></span>
+              </label>
+
+              <label class="popup__field">
+                <input
+                  type="text"
+                  class="popup__input popup__input_about"
+                  placeholder="Acerca de mi"
+                  minlength="2"
+                  maxlength="200"
+                  id="about-input"
+                  required
+                  aria-label="Acerca de mí"
+                />
+                <span
+                  class="popup__input-error about-input-error"
+                  id="about-input-error"
+                ></span>
+              </label>
+
+              <button
+                type="submit"
+                class="popup__button popup__button_save"
+                aria-label="Guardar perfil"
+              >
+                Guardar
+              </button>
+            </fieldset>
+          </form>
+
+          <form class="popup__form form-add" novalidate>
+            <h2 class="popup__subtitle">Nuevo lugar</h2>
+            <fieldset class="popup__content">
+              <label class="popup__field">
+                <input
+                  type="text"
+                  class="popup__input popup__input_title"
+                  placeholder="Título"
+                  minlength="2"
+                  maxlength="30"
+                  id="title-input"
+                  required
+                  aria-label="Título del lugar"
+                />
+                <span
+                  class="popup__input-error title-input-error"
+                  id="title-input-error"
+                ></span>
+              </label>
+
+              <label class="popup__field">
+                <input
+                  type="url"
+                  class="popup__input popup__input_url"
+                  placeholder="URL a la imagen"
+                  id="url-input"
+                  required
+                  aria-label="URL de la imagen"
+                />
+                <span
+                  class="popup__input-error url-input-error"
+                  id="url-input-error"
+                ></span>
+              </label>
+
+              <button
+                type="submit"
+                class="popup__button popup__button_add"
+                aria-label="Guardar nuevo lugar"
+              >
+                Guardar
+              </button>
+            </fieldset>
+          </form>
+
+          <form class="popup__form form-img" novalidate>
+            <h2 class="popup__subtitle">Cambiar foto de perfil</h2>
+            <fieldset class="popup__content">
+              <label class="popup__field">
+                <input
+                  type="url"
+                  class="popup__input popup__input_img"
+                  placeholder="URL a la imagen"
+                  id="i-url-input"
+                  required
+                  aria-label="URL nueva de la imagen de perfil"
+                />
+                <span
+                  class="popup__input-error i-url-input-error"
+                  id="i-url-input-error"
+                ></span>
+              </label>
+
+              <button
+                type="submit"
+                class="popup__button popup__button_img"
+                aria-label="Guardar foto de perfil"
+              >
+                Guardar
+              </button>
+            </fieldset>
+          </form>
+
+          <div class="popup__trash" aria-hidden="true">
+            <h2 class="popup__subtitle">¿Estás seguro?</h2>
+            <button
+              type="button"
+              class="popup__button popup__button_trash"
+              aria-label="Confirmar eliminación"
+            >
+              Sí
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <header class="header" role="banner">
+        <img
+          src="./images/Vector.svg"
+          alt="Logotipo de la página"
+          class="header__image"
+        />
+      </header>
+
+      <main class="main" role="main">
+        <div class="main__profile">
+          <div class="main__content-image">
+            <img
+              src="./images/yo.png"
+              alt="Foto de perfil"
+              class="main__profile-image"
+            />
+            <button
+              type="button"
+              class="main__button main__button_img"
+              aria-label="Editar imagen de perfil"
+            >
+              ✎
+            </button>
+          </div>
+
+          <div class="main__content-paragraph">
+            <p class="main__paragraph main__paragraph_name">Nombre usuario</p>
+            <p class="main__paragraph main__paragraph_job">Breve descripción</p>
+            <button
+              type="button"
+              class="main__button main__button_edit"
+              aria-label="Editar perfil"
+            >
+              ✎
+            </button>
+          </div>
+
+          <button
+            type="button"
+            class="main__button main__button_add"
+            aria-label="Agregar lugar"
+          >
+            ➕
+          </button>
+        </div>
+
+        <div class="main__gallery" aria-live="polite"></div>
+      </main>
+
+      <template id="main__template">
+        <div class="main__gallery-card">
+          <img class="main__gallery-image" src="" alt="Imagen del lugar" />
+          <button
+            type="button"
+            class="main__button main__button_trash"
+            aria-label="Eliminar tarjeta"
+          ></button>
+          <div class="main__gallery-content">
+            <p class="main__gallery-paragraph">Título</p>
+            <button
+              type="button"
+              class="main__button main__button_like"
+              aria-label="Me gusta"
+            ></button>
+          </div>
+        </div>
+      </template>
+
+      <footer class="footer" role="contentinfo">
+        <p class="footer__copyright">© 2024 Around The U.S.</p>
+      </footer>
+    </div>
+
+    <script type="module" src="./page/index.js"></script>
+  </body>
+</html>
