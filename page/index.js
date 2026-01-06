@@ -10,7 +10,7 @@ import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
 import {
   popup,
-  popimage,
+  popimg,
   poptxt,
   gallery,
   validationConfig,
@@ -36,6 +36,32 @@ import {
   popButImg,
 } from "../constants/utils.js";
 
+function hideAllPopupContent() {
+  // hide any form, the image element and caption, and the trash confirmation
+  popup.querySelectorAll('.popup__form, .popup__image, .popup__paragraph, .popup__paragraph-content, .popup__trash').forEach((el) => {
+    el.classList.add('popup__item-hidden');
+  });
+}
+
+function openEditPopup() {
+  hideAllPopupContent();
+  popup.querySelector(edClass).classList.remove("popup__item-hidden");
+  popupFormEdit.open();
+}
+
+function openAddPopup() {
+  hideAllPopupContent();
+  popup.querySelector(addClass).classList.remove("popup__item-hidden");
+  popupFormAdd.open();
+}
+
+function openImgPopup() {
+  hideAllPopupContent();
+  popup.querySelector(imgClass).classList.remove("popup__item-hidden");
+  popupFormImg.open();
+}
+
+
 export const api = new Api({
   baseUrl: "https://around-api.es.tripleten-services.com/v1",
   headers: {
@@ -60,11 +86,11 @@ export const popupFormAdd = new PopupWithForm(popup, addClass, () => {
     .catch((err) => {
       popButAdd.textContent = err;
     });
-};
+});
 
 export const formInfoEdit = (nameValue, aboutValue) => {
   api
-    .editUserInfo({ name: nameValue, about: aboutValue })
+    .setUserInfo(nameValue, aboutValue)
     .then((data) => {
       console.log(data);
       popButEdit.textContent = "Guardando...";
@@ -97,7 +123,7 @@ const sectionFormCard = new Section((item) => {
   return card.generate();
 }, ".main__gallery");
 
-const popupImage = new PopupWithImage(popimag, poptxt);
+const popupImage = new PopupWithImage(popimg);
 
 formElements.forEach((formElement) => {
   const formValidator = new FormValidator(validationConfig, formElement);
@@ -105,9 +131,24 @@ formElements.forEach((formElement) => {
   formValidators.push(formValidator);
 });
 
-if (butEdit) butEdit.addEventListener("click", (e) => openEditAdd(e, openPop));
-if (butAdd) butAdd.addEventListener("click", (e) => openEditAdd(e, openPop));
-if (butImg) butImg.addEventListener("click", (e) => openEditAdd(e, openPop));
+if (butEdit) {
+  butEdit.addEventListener("click", () => {
+    openEditPopup();
+  });
+}
+
+if (butAdd) {
+  butAdd.addEventListener("click", () => {
+    openAddPopup();
+  });
+}
+
+if (butImg) {
+  butImg.addEventListener("click", () => {
+    openImgPopup();
+  });
+}
+
 
 document.addEventListener("keydown", (e) => {
   const target = e.target;

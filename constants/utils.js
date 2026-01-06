@@ -1,10 +1,3 @@
-import {
-  formCardsAdd as add,
-  usInfo,
-  formInfoEdit,
-  formImgProfile,
-} from "../page/index.js";
-
 export const edClass = ".form-edit";
 export const addClass = ".form-add";
 export const imgClass = ".form-img";
@@ -30,8 +23,13 @@ export const inpAbout = document.querySelector(".popup__input_about");
 export const inpTitle = document.querySelector(".popup__input_title");
 export const inpUrl = document.querySelector(".popup__input_url");
 export const inpImg = document.querySelector(".popup__input_img");
-export const popimag = popimg.querySelector(".popup__image");
-export const poptxt = popimg.querySelector(".popup__paragraph");
+export const popimag = popimg
+  ? popimg.querySelector(".popup__image")
+  : null;
+export const poptxt = popimg
+  ? popimg.querySelector(".popup__paragraph")
+  : null;
+export const inpImgProfile = document.querySelector(".popup__input_img_profile");
 export const gallery = ".main__gallery";
 export const validationConfig = {
   formSelector: ".popup__form",
@@ -92,20 +90,7 @@ export const closePop = () => {
   }, 1500);
 };
 
-export const saveChangeEdit = (nameValue, aboutValue) => {
-  formInfoEdit(nameValue, aboutValue);
-  closePop();
-};
 
-export const saveCard = (title, link) => {
-  add(title, link, "#main__template");
-  closePop();
-};
-
-export const saveImgProfile = (avatarValue) => {
-  formImgProfile(avatarValue);
-  closePop();
-};
 
 const resetFormAndValidation = (modal) => {
   const formElements = modal.querySelectorAll(validationConfig.formSelector);
@@ -119,3 +104,5 @@ const resetFormAndValidation = (modal) => {
     }
   });
 };
+
+
