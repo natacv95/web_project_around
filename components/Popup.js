@@ -12,6 +12,9 @@ export default class Popup {
       throw new Error("Popup element not found (invalid selector or element)");
     }
 
+    // Inicializar aria-hidden correctamente
+    this._popup.setAttribute("aria-hidden", "true");
+
     this._handleEscClose = this._handleEscClose.bind(this);
     this._handleCloseClick = this._handleCloseClick.bind(this);
     this._handleOverlayClick = this._handleOverlayClick.bind(this);
@@ -20,12 +23,14 @@ export default class Popup {
 
   open() {
     this._popup.classList.add("popup_opened");
+    this._popup.setAttribute("aria-hidden", "false");
     document.addEventListener("keydown", this._handleEscClose);
     this.addEventListeners();
   }
 
   close() {
     this._popup.classList.remove("popup_opened");
+    this._popup.setAttribute("aria-hidden", "true");
     document.removeEventListener("keydown", this._handleEscClose);
     this.removeEventListeners();
 
@@ -77,10 +82,8 @@ export default class Popup {
   removeEventListeners() {
     if (!this._listenersAdded) return;
 
-    const closeButton = this._popup.querySelector(".popup__button_close");
-    if (closeButton) {
-      closeButton.removeEventListener("click", this._handleCloseClick);
-    }
+    // No remover el listener del botón de cerrar, solo el del overlay
+    // El botón de cerrar debería estar disponible para todos los popups
 
     this._popup.removeEventListener("mousedown", this._handleOverlayClick);
 

@@ -26,14 +26,17 @@ import {
   butEdit,
   butAdd,
   butImg,
+  butTrash,
   imgClass,
   openEditAdd,
   inpTitle,
+  inpUrl,
   inpImg,
   popButAdd,
   popButEdit,
   popButImg,
   inpImgProfile,
+  initialCards,
 } from "../constants/utils.js";
 
 
@@ -59,13 +62,26 @@ export const popupFormAdd = new PopupWithForm(
   addClass,
   () => {
     const titleValue = inpTitle.value;
-    const linkValue = inpImg.value;
+    const linkValue = inpUrl.value;
 
     popButAdd.textContent = "Guardando...";
 
     api.addCard({ name: titleValue, link: linkValue })
       .then((res) => {
-        sectionFormCard.addItem(res);
+        // Renderizar la tarjeta usando el mismo método que renderItems
+        const card = new Card(
+          res,
+          "#main__template",
+          popupImage,
+          popupWithConfirmation,
+          api
+        );
+        sectionFormCard.addItem(card.getCreateCard());
+        popupFormAdd.close();
+      })
+      .catch((err) => {
+        console.error("Error agregando tarjeta:", err);
+        popButAdd.textContent = "Error";
       })
       .finally(() => {
         popButAdd.textContent = "Guardar";
@@ -117,12 +133,12 @@ const usInfo = new UserInfo({
   avatarSelector: ".main__profile-image",
 });
 
-const popupImage = new PopupWithImage(".popup");
-popupImage.setEventListeners();
-
 const popupWithConfirmation = new PopupWithConfirmation(
-  ".popup__trash"
+  ".popup"
 );
+
+const popupImage = new PopupWithImage(".popup", popupWithConfirmation);
+popupImage.setEventListeners();
 
 
 const sectionFormCard = new Section(
@@ -174,11 +190,19 @@ const saveChangeEdit = (nameValue, aboutValue) => {
 
 const saveCard = () => {
   const titleValue = inpTitle.value;
-  const linkValue = inpImg.value;
+  const linkValue = inpUrl.value;
 
   api.addCard({ name: titleValue, link: linkValue })
     .then((card) => {
-      sectionFormCard.addItem(card);
+      // Renderizar la tarjeta usando el mismo método que renderItems
+      const cardElement = new Card(
+        card,
+        "#main__template",
+        popupImage,
+        popupWithConfirmation,
+        api
+      );
+      sectionFormCard.addItem(cardElement.getCreateCard());
     })
     .catch(console.error);
 };
@@ -260,17 +284,19 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-Promise.all([api.getUserInfo(), api.getInitialCards()])
-  .then(([userData, cards]) => {
+// Cargar tarjetas iniciales (estáticas locales)
+sectionFormCard.renderItems(initialCards);
+
+// Cargar información del usuario desde el API
+api.getUserInfo()
+  .then((userData) => {
     usInfo.setUserInfo({
       name: userData.name,
       job: userData.about,
     });
 
     usInfo.setAvatar({ avatar: userData.avatar });
-
-    sectionFormCard.renderItems(cards);
   })
   .catch((err) => {
-    console.error("Error cargando datos iniciales:", err);
+    console.error("Error cargando datos del usuario:", err);
   });

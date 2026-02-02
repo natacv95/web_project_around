@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Eliminación</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .test-section { border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
+        button { padding: 8px 15px; margin: 5px; cursor: pointer; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .pass { background: #d4edda; color: #155724; }
+        .fail { background: #f8d7da; color: #721c24; }
+        .pending { background: #d1ecf1; color: #0c5460; }
+        #log { border: 1px solid #999; padding: 10px; height: 200px; overflow-y: auto; background: #f5f5f5; font-family: monospace; font-size: 12px; }
+        .log-entry { margin: 2px 0; }
+        .log-error { color: red; }
+        .log-success { color: green; }
+        .log-info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Test de Eliminación de Tarjetas</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Cargar Página</h2>
+        <p id="test1-status" class="status pending">Comprobando...</p>
+        <button onclick="runTest1()">Ejecutar Test 1</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 2: Verificar Estructura del Trash Button</h2>
+        <p id="test2-status" class="status pending">Comprobando...</p>
+        <button onclick="runTest2()">Ejecutar Test 2</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 3: Simular Click en Trash de Tarjeta</h2>
+        <p id="test3-status" class="status pending">Comprobando...</p>
+        <button onclick="runTest3()">Ejecutar Test 3</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Consola de Log</h2>
+        <div id="log"></div>
+        <button onclick="clearLog()">Limpiar Log</button>
+    </div>
+
+    <script type="module">
+        // Redirect console.log to our log div
+        const logDiv = document.getElementById('log');
+        const originalLog = console.log;
+        const originalError = console.error;
+
+        window.testLog = function(...args) {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry log-info';
+            entry.textContent = '[INFO] ' + args.join(' ');
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            originalLog(...args);
+        };
+
+        window.testError = function(...args) {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry log-error';
+            entry.textContent = '[ERROR] ' + args.join(' ');
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            originalError(...args);
+        };
+
+        window.testSuccess = function(msg) {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry log-success';
+            entry.textContent = '[SUCCESS] ' + msg;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        };
+
+        window.runTest1 = function() {
+            testLog('Iniciando Test 1...');
+            const status = document.getElementById('test1-status');
+            
+            try {
+                // Try to load the main script
+                import('../scripts/index.js').then(() => {
+                    testSuccess('Script de índice cargado correctamente');
+                    status.textContent = '✅ Página cargada correctamente';
+                    status.className = 'status pass';
+                }).catch(err => {
+                    testError('Error al cargar script:', err);
+                    status.textContent = '❌ Error al cargar la página: ' + err.message;
+                    status.className = 'status fail';
+                });
+            } catch (err) {
+                testError('Error en Test 1:', err);
+                status.textContent = '❌ Error: ' + err.message;
+                status.className = 'status fail';
+            }
+        };
+
+        window.runTest2 = function() {
+            testLog('Iniciando Test 2...');
+            const status = document.getElementById('test2-status');
+            
+            try {
+                const butTrash = document.querySelector('.popup__button_trash');
+                const popTrash = document.querySelector('.popup__trash');
+                
+                if (!butTrash) {
+                    testError('Button .popup__button_trash no encontrado');
+                    status.textContent = '❌ Botón trash no encontrado';
+                    status.className = 'status fail';
+                    return;
+                }
+                
+                if (!popTrash) {
+                    testError('Elemento .popup__trash no encontrado');
+                    status.textContent = '❌ Elemento trash no encontrado';
+                    status.className = 'status fail';
+                    return;
+                }
+                
+                testSuccess('Elemento .popup__trash encontrado');
+                testSuccess('Button .popup__button_trash encontrado');
+                status.textContent = '✅ Estructura del trash encontrada';
+                status.className = 'status pass';
+            } catch (err) {
+                testError('Error en Test 2:', err);
+                status.textContent = '❌ Error: ' + err.message;
+                status.className = 'status fail';
+            }
+        };
+
+        window.runTest3 = function() {
+            testLog('Iniciando Test 3...');
+            const status = document.getElementById('test3-status');
+            
+            try {
+                // Find first card with trash button
+                const firstCard = document.querySelector('.main__gallery-card');
+                if (!firstCard) {
+                    testError('No se encontraron tarjetas');
+                    status.textContent = '❌ No hay tarjetas para probar';
+                    status.className = 'status fail';
+                    return;
+                }
+                
+                const trashButton = firstCard.querySelector('.main__button_trash');
+                if (!trashButton) {
+                    testError('Botón trash en tarjeta no encontrado');
+                    status.textContent = '❌ Botón trash en tarjeta no encontrado';
+                    status.className = 'status fail';
+                    return;
+                }
+                
+                testSuccess('Simulando click en botón trash de tarjeta...');
+                
+                // Simulate click
+                const clickEvent = new MouseEvent('click', {
+                    bubbles: true,
+                    cancelable: true,
+                    view: window
+                });
+                
+                trashButton.dispatchEvent(clickEvent);
+                
+                testSuccess('Click simulado. Revisa la consola del navegador (F12) para más detalles');
+                status.textContent = '✅ Click simulado. Revisa console.log';
+                status.className = 'status pass';
+            } catch (err) {
+                testError('Error en Test 3:', err);
+                status.textContent = '❌ Error: ' + err.message;
+                status.className = 'status fail';
+            }
+        };
+
+        window.clearLog = function() {
+            logDiv.innerHTML = '';
+        };
+
+        // Auto-run Test 1 on page load
+        testLog('Página de test cargada');
+        runTest1();
+    </script>
+</body>
+</html>

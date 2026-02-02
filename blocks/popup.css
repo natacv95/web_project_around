@@ -151,6 +151,15 @@
   margin: 0 auto 40px;
 }
 
+.popup__button_trash_image {
+  width: 19px;
+  height: 19px;
+  background: url(../images/trash.svg) center no-repeat;
+  border: none;
+  padding: 0;
+  margin-left: 10px;
+}
+
 .popup__button_disabled {
   background-color: #c4c4c4;
   cursor: default;

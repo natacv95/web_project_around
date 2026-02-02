@@ -32,7 +32,7 @@
   </head>
   <body>
     <div class="page">
-      <div class="popup" aria-hidden="true">
+      <div class="popup" role="dialog" aria-modal="true">
         <div
           class="popup__container"
           role="dialog"
@@ -54,6 +54,11 @@
 
             <div class="popup__paragraph-content">
               <p class="popup__paragraph"></p>
+              <button
+                type="button"
+                class="popup__button popup__button_trash_image"
+                aria-label="Eliminar imagen"
+              ></button>
             </div>
           <form class="popup__form form-edit" novalidate>
             <h2 class="popup__subtitle">Editar perfil</h2>
@@ -175,7 +180,7 @@
             </fieldset>
           </form>
 
-          <div class="popup__trash" aria-hidden="true">
+          <div class="popup__trash popup__item-hidden">
             <h2 class="popup__subtitle">¿Estás seguro?</h2>
             <button
               type="button"

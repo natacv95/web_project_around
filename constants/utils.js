@@ -1,3 +1,30 @@
+export const initialCards = [
+  {
+    name: "Valle de Yosemite",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/yosemite.jpg"
+  },
+  {
+    name: "Lago Louise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lake-louise.jpg"
+  },
+  {
+    name: "Montañas Calvas",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/bald-mountains.jpg"
+  },
+  {
+    name: "Latemar",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/latemar.jpg"
+  },
+  {
+    name: "Parque Nacional de la Vanoise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/vanoise.jpg"
+  },
+  {
+    name: "Lago di Braies",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lago.jpg"
+  }
+];
+
 export const edClass = ".form-edit";
 export const addClass = ".form-add";
 export const imgClass = ".form-img";
@@ -13,7 +40,7 @@ export const popup = document.querySelector(".popup");
 export const formEd = document.querySelector(edClass);
 export const formAdd = document.querySelector(addClass);
 export const formImg = document.querySelector(imgClass);
-export const popimg = document.querySelector(".popup__images");
+export const popimg = document.querySelector(".popup");
 export const popTrash = document.querySelector(".popup__trash");
 export const paragName = document.querySelector(".main__paragraph_name");
 export const paragAbout = document.querySelector(".main__paragraph_job");
@@ -48,7 +75,8 @@ export const openEditAdd = (e, openPop) => {
   if (butClass.contains("main__button_edit")) {
     openPop.open();
     formAdd.classList.toggle("popup__item-hidden");
-    popimg.classList.toggle("popup__item-hidden");
+    if (popimag) popimag.classList.toggle("popup__item-hidden");
+    if (poptxt) poptxt.classList.toggle("popup__item-hidden");
     formImg.classList.toggle("popup__item-hidden");
     popTrash.classList.toggle("popup__item-hidden");
     const userData = usInfo.getUserInfo();
@@ -62,13 +90,15 @@ export const openEditAdd = (e, openPop) => {
   } else if (butClass.contains("main__button_add")) {
     openPop.open();
     formEd.classList.toggle("popup__item-hidden");
-    popimg.classList.toggle("popup__item-hidden");
+    if (popimag) popimag.classList.toggle("popup__item-hidden");
+    if (poptxt) poptxt.classList.toggle("popup__item-hidden");
     formImg.classList.toggle("popup__item-hidden");
     popTrash.classList.toggle("popup__item-hidden");
   } else if (butClass.contains("main__button_img")) {
     openPop.open();
     formEd.classList.toggle("popup__item-hidden");
-    popimg.classList.toggle("popup__item-hidden");
+    if (popimag) popimag.classList.toggle("popup__item-hidden");
+    if (poptxt) poptxt.classList.toggle("popup__item-hidden");
     formAdd.classList.toggle("popup__item-hidden");
     popTrash.classList.toggle("popup__item-hidden");
   }
@@ -77,7 +107,8 @@ export const openEditAdd = (e, openPop) => {
 export const closePop = () => {
   setTimeout(() => {
     popup.classList.remove("popup_opened");
-    popimg.classList.remove("popup__item-hidden");
+    if (popimag) popimag.classList.remove("popup__item-hidden");
+    if (poptxt) poptxt.classList.remove("popup__item-hidden");
     formAdd.classList.remove("popup__item-hidden");
     formEd.classList.remove("popup__item-hidden");
     formImg.classList.remove("popup__item-hidden");

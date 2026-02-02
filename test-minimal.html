@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Minimal</title>
+    <style>
+        .popup { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 100; }
+        .popup_opened { display: block; }
+        .popup__trash { background: white; padding: 20px; margin: 100px auto; width: 300px; }
+        .popup__item-hidden { display: none; }
+        button { padding: 10px 20px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Test Minimal</h1>
+    <button id="open-btn">Abrir Popup</button>
+    <button id="simulate-card-trash">Simular Click en Trash de Tarjeta</button>
+
+    <div class="popup" id="popup">
+        <div class="popup__trash popup__item-hidden" id="trash">
+            <h2>¿Estás seguro?</h2>
+            <button type="button" class="popup__button popup__button_trash" id="yes-btn">Sí</button>
+        </div>
+    </div>
+
+    <script>
+        const popup = document.getElementById('popup');
+        const trash = document.getElementById('trash');
+        const yesBtn = document.getElementById('yes-btn');
+        const openBtn = document.getElementById('open-btn');
+        const simulateBtn = document.getElementById('simulate-card-trash');
+
+        let cardToDelete = { name: 'Test Card', deleted: false };
+
+        // Simular abrir confirmation popup
+        function openConfirmation(card) {
+            trash.classList.remove('popup__item-hidden');
+            popup.classList.add('popup_opened');
+            cardToDelete = card;
+        }
+
+        // Simular cerrar confirmation popup
+        function closeConfirmation() {
+            trash.classList.add('popup__item-hidden');
+            popup.classList.remove('popup_opened');
+        }
+
+        // El listener del botón "Sí"
+        yesBtn.addEventListener('click', function() {
+            if (cardToDelete) {
+                cardToDelete.deleted = true;
+                closeConfirmation();
+                alert('Tarjeta eliminada: ' + cardToDelete.name);
+            }
+        });
+
+        openBtn.addEventListener('click', function() {
+            openConfirmation({ name: 'Test Card' });
+        });
+
+        simulateBtn.addEventListener('click', function() {
+            // Simular lo que haría Card._trash()
+            openConfirmation({ name: 'Card from Trash Button' });
+        });
+
+    </script>
+</body>
+</html>
