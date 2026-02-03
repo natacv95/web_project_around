@@ -2,6 +2,9 @@
   max-width: 880px;
   margin: auto;
   padding-top: 40px;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .main__profile {
@@ -110,14 +113,19 @@
 .main__gallery-card {
   position: relative;
   max-width: 290px;
+  flex: 1 1 260px;
   background-color: #fff;
   color: #000;
   border-radius: 10px;
+  overflow: hidden;
 }
 
 .main__gallery-image {
-  width: 282px;
+  display: block;
+  width: 100%;
+  max-width: 100%;
   height: 282px;
+  object-fit: cover;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
@@ -174,14 +182,21 @@
 }
 
 @media screen and (min-width: 320px) and (max-width: 584px) {
+  .main {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
   .main__profile {
-    max-width: 290px;
+    max-width: 100%;
     grid-template-columns: 1fr;
     grid-template-rows: 120px repeat(2, 50px);
     justify-items: center;
     margin: auto;
     grid-row-gap: 30px;
     padding-bottom: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .main__content-paragraph {
@@ -209,23 +224,42 @@
   }
 
   .main__button_add {
-    width: 100%;
+    width: calc(100% - 20px);
     grid-row: 3;
   }
 
   .main__gallery {
-    max-width: 290px;
+    width: calc(100% - 20px);
+    max-width: 100%;
     margin: auto;
     gap: 20px;
     justify-content: center;
   }
+
+  .main__gallery-card {
+    flex: 0 1 auto;
+    width: 100%;
+    max-width: 290px;
+  }
+
+  .main__gallery-image {
+    width: 100%;
+    height: 282px;
+  }
 }
 
 @media screen and (min-width: 585px) and (max-width: 880px) {
+  .main {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
   .main__profile {
-    max-width: 700px;
+    max-width: 100%;
     margin: auto;
     padding-bottom: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .main__paragraph_name {
@@ -246,12 +280,23 @@
   }
 
   .main__button_add {
-    width: 100%;
+    width: calc(100% - 20px);
   }
 
   .main__gallery {
-    max-width: 600px;
+    width: calc(100% - 20px);
+    max-width: 100%;
     margin: auto;
     gap: 20px;
+  }
+
+  .main__gallery-card {
+    flex: 1 1 260px;
+    max-width: 290px;
+  }
+
+  .main__gallery-image {
+    width: 100%;
+    height: 282px;
   }
 }
