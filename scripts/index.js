@@ -2,6 +2,7 @@ import Api from "../components/Api.js";
 import Card from "../components/Card.js";
 import FormCard from "../components/FormCard.js";
 import FormValidator from "../components/FormValidator.js";
+import { enableValidation } from "./validate.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
@@ -219,11 +220,8 @@ const saveImgProfile = () => {
 
 
 
-formElements.forEach((formElement) => {
-  const formValidator = new FormValidator(validationConfig, formElement);
-  formValidator.enableValidation();
-  formValidators.push(formValidator);
-});
+// Enable validation for all popup forms using the centralized helper
+enableValidation(validationConfig, formValidators);
 
 
 if (butEdit) {
