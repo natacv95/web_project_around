@@ -26,14 +26,37 @@ export default class FormValidator {
     inputElement.classList.remove(this._config.inputErrorClass);
     errorElement.classList.remove(this._config.errorClass);
     errorElement.textContent = "";
+    // clear any custom validity previously set
+    inputElement.setCustomValidity("");
   }
 
   _checkInputValidity(inputElement) {
     if (!inputElement.validity.valid) {
+      const message = this._getErrorMessage(inputElement);
+      // set custom validity so input.validationMessage returns our Spanish message
+      inputElement.setCustomValidity(message);
       this._showInputError(inputElement, inputElement.validationMessage);
     } else {
+      // clear custom validity and hide error
+      inputElement.setCustomValidity("");
       this._hideInputError(inputElement);
     }
+  }
+
+  _getErrorMessage(inputElement) {
+    const v = inputElement.validity;
+    const name = inputElement.getAttribute('aria-label') || inputElement.placeholder || inputElement.name || 'Campo';
+
+    if (v.valueMissing) return 'Este campo es obligatorio.';
+    if (v.tooShort) return `Debe contener al menos ${inputElement.getAttribute('minlength')} caracteres.`;
+    if (v.tooLong) return `Debe contener como máximo ${inputElement.getAttribute('maxlength')} caracteres.`;
+    if (v.typeMismatch) {
+      if (inputElement.type === 'url') return 'Por favor, introduce una URL válida.';
+      return 'El valor no tiene el formato correcto.';
+    }
+    if (v.patternMismatch) return 'El valor no coincide con el formato esperado.';
+    // fallback
+    return 'Entrada no válida.';
   }
 
   _hasInvalidInput() {

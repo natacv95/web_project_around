@@ -2,7 +2,7 @@ import Api from "../components/Api.js";
 import Card from "../components/Card.js";
 import FormCard from "../components/FormCard.js";
 import FormValidator from "../components/FormValidator.js";
-import { enableValidation } from "./validate.js";
+import { enableValidation, resetValidationForPopup } from "./validate.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
@@ -247,6 +247,10 @@ if (butAdd) {
     hideAllPopupContent();
     const form = popup.querySelector(addClass);
     if (form) form.classList.remove('popup__item-hidden');
+    // reset validation state for popup forms (clear errors and button state)
+    try {
+      resetValidationForPopup(popup, validationConfig, formValidators);
+    } catch (e) {}
     popupFormAdd.open();
   });
 }
@@ -256,6 +260,9 @@ if (butImg) {
     hideAllPopupContent();
     const form = popup.querySelector(imgClass);
     if (form) form.classList.remove('popup__item-hidden');
+    try {
+      resetValidationForPopup(popup, validationConfig, formValidators);
+    } catch (e) {}
     popupFormImg.open();
   });
 }
