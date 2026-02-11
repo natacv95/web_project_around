@@ -26,19 +26,14 @@ export default class FormValidator {
     inputElement.classList.remove(this._config.inputErrorClass);
     errorElement.classList.remove(this._config.errorClass);
     errorElement.textContent = "";
-    // clear any custom validity previously set
-    inputElement.setCustomValidity("");
   }
 
   _checkInputValidity(inputElement) {
     if (!inputElement.validity.valid) {
       const message = this._getErrorMessage(inputElement);
-      // set custom validity so input.validationMessage returns our Spanish message
-      inputElement.setCustomValidity(message);
-      this._showInputError(inputElement, inputElement.validationMessage);
+      // show Spanish error message (don't use setCustomValidity as it marks input invalid)
+      this._showInputError(inputElement, message);
     } else {
-      // clear custom validity and hide error
-      inputElement.setCustomValidity("");
       this._hideInputError(inputElement);
     }
   }
