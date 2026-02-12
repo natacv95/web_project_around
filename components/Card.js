@@ -1,13 +1,13 @@
 import { butTrash } from "../constants/utils.js";
 
 export default class Card {
-  constructor(data, cardSelector, handleCardClick, handleCardDelete, api) {
+  constructor(data, cardSelector, handleCardClick, popupWithConfirmation, api) {
     this._id = data._id;
     this._name = data.name;
     this._link = data.link;
     this._cardSelector = cardSelector;
     this._popupImage = handleCardClick;
-    this._handleCardDelete = handleCardDelete;
+    this._popupWithConfirmation = popupWithConfirmation;
     this._api = api;
   }
 
@@ -63,14 +63,15 @@ export default class Card {
       return;
     }
     
-    // Eliminar la tarjeta directamente sin popup de confirmación
+    // Abrir popup de confirmación al hacer clic en trash
     const handleTrashClick = () => {
       try {
-        if (this._element && this._element.parentNode) {
-          this._element.remove();
+        if (this._popupWithConfirmation) {
+          this._popupWithConfirmation._cardToDelete = this;
+          this._popupWithConfirmation.open();
         }
       } catch (err) {
-        console.error("[Card] ERROR removing card:", err);
+        console.error("[Card] ERROR opening confirmation popup:", err);
       }
     };
     

@@ -12,6 +12,17 @@ export default class PopupWithForm extends Popup {
     this._submitHandler = this._submitHandler.bind(this);
   }
 
+  open() {
+    // Hide trash confirmation when opening form
+    const trash = this._popup.querySelector('.popup__trash');
+    if (trash) {
+      trash.classList.add('popup__item-hidden');
+      trash.style.display = 'none'; // Force hide with inline style
+    }
+    
+    super.open();
+  }
+
   _getInputValues() {
     const inputs = this._form.querySelectorAll(".popup__input");
     const values = {};

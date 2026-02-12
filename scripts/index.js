@@ -138,7 +138,7 @@ const popupWithConfirmation = new PopupWithConfirmation(
   ".popup"
 );
 
-const popupImage = new PopupWithImage(".popup", popupWithConfirmation);
+const popupImage = new PopupWithImage(".popup");
 popupImage.setEventListeners();
 
 

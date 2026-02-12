@@ -98,21 +98,23 @@ export default class PopupWithConfirmation extends Popup {
 
   open() {
     try {
-      // Ocultar todos los formularios y elementos de imagen
+      // Ocultar todos los formularios e imagen
       if (formAdd) formAdd.classList.add("popup__item-hidden");
       if (formEd) formEd.classList.add("popup__item-hidden");
       if (formImg) formImg.classList.add("popup__item-hidden");
       if (popimag) popimag.classList.add("popup__item-hidden");
       if (poptxt) poptxt.classList.add("popup__item-hidden");
 
+      // Mostrar el trash/confirmación
       if (popTrash) {
         popTrash.classList.remove("popup__item-hidden");
+        popTrash.style.display = ''; // Remove inline style to allow CSS to show it
       } else {
         console.error("[PopupWithConfirmation] ERROR: popTrash is null");
       }
 
+      // Abrir el popup
       super.open();
-      // Popup opened; normal behavior continues.
     } catch (err) {
       console.error("Error opening PopupWithConfirmation:", err);
     }
