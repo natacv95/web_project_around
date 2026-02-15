@@ -9,6 +9,15 @@ export default class PopupWithImage extends Popup {
     this._currentCard = null;
   }
 
+  _isValidUrl(url) {
+    try {
+      const urlObj = new URL(url);
+      return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  }
+
   open(link, name, cardElement = null) {
     // Store the card element for potential deletion
     this._currentCard = cardElement;
@@ -34,8 +43,18 @@ export default class PopupWithImage extends Popup {
     if (imgEl) {
       imgEl.classList.remove('popup__item-hidden');
       imgEl.style.display = ''; // Remove inline style to allow CSS
-      imgEl.src = link;
-      imgEl.alt = name;
+      
+      // Usar directamente la URL del link
+      if (this._isValidUrl(link)) {
+        imgEl.src = link;
+        imgEl.onerror = () => {
+          imgEl.style.backgroundColor = "#e0e0e0";
+        };
+      } else {
+        imgEl.src = "";
+        imgEl.style.backgroundColor = "#e0e0e0";
+      }
+      imgEl.alt = name || "Image";
     }
     if (captionEl) {
       captionEl.classList.remove('popup__item-hidden');

@@ -37,7 +37,6 @@ import {
   popButEdit,
   popButImg,
   inpImgProfile,
-  initialCards,
 } from "../constants/utils.js";
 
 
@@ -137,6 +136,7 @@ const usInfo = new UserInfo({
 const popupWithConfirmation = new PopupWithConfirmation(
   ".popup"
 );
+popupWithConfirmation.setApi(api);
 
 const popupImage = new PopupWithImage(".popup");
 popupImage.setEventListeners();
@@ -289,10 +289,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// Cargar tarjetas iniciales (estáticas locales)
-sectionFormCard.renderItems(initialCards);
-
-// Cargar información del usuario desde el API
+// Cargar información del usuario y tarjetas desde el API
 api.getUserInfo()
   .then((userData) => {
     usInfo.setUserInfo({
@@ -304,4 +301,13 @@ api.getUserInfo()
   })
   .catch((err) => {
     console.error("Error cargando datos del usuario:", err);
+  });
+
+// Cargar tarjetas desde el servidor
+api.getInitialCards()
+  .then((cards) => {
+    sectionFormCard.renderItems(cards);
+  })
+  .catch((err) => {
+    console.error("Error cargando tarjetas:", err);
   });

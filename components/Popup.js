@@ -38,7 +38,7 @@ export default class Popup {
     const imgEl = this._popup.querySelector('.popup__image');
     if (imgEl) {
       imgEl.classList.add('popup__item-hidden');
-      imgEl.src = 'about:blank';
+      imgEl.src = '';
       imgEl.alt = '';
     }
     const captionEl = this._popup.querySelector('.popup__paragraph');

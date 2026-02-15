@@ -11,6 +11,10 @@ export default class PopupWithConfirmation extends Popup {
     this._setupDeleteHandler();
   }
 
+  setApi(api) {
+    this._api = api;
+  }
+
   _handleTrashClick(event) {
     
     try {
@@ -61,26 +65,55 @@ export default class PopupWithConfirmation extends Popup {
       
       if (butTrash) butTrash.textContent = "Eliminando...";
       
-      // Siempre eliminar del DOM (sin llamadas a API)
-      try {
-        card._element.remove();
-      } catch (err) {
-        console.error("[PopupWithConfirmation] Error removing card from DOM:", err);
-        if (butTrash) butTrash.textContent = "Error";
-        setTimeout(() => {
-          if (butTrash) butTrash.textContent = "Sí";
-        }, 1500);
-        return;
+      // Si tenemos API, hacer la llamada primero
+      if (this._api && card._id) {
+        this._api.removeCard(card._id)
+          .then(() => {
+            // Eliminar del DOM después de que el API confirme
+            try {
+              card._element.remove();
+            } catch (err) {
+              console.error("[PopupWithConfirmation] Error removing card from DOM:", err);
+            }
+            
+            try {
+              this.close();
+            } catch (err) {
+              console.error("[PopupWithConfirmation] Error closing popup:", err);
+            }
+            
+            if (butTrash) butTrash.textContent = "Sí";
+            this._cardToDelete = null;
+          })
+          .catch((err) => {
+            console.error("[PopupWithConfirmation] Error deleting card from API:", err);
+            if (butTrash) butTrash.textContent = "Error";
+            setTimeout(() => {
+              if (butTrash) butTrash.textContent = "Sí";
+            }, 1500);
+          });
+      } else {
+        // Si no hay API, solo eliminar del DOM
+        try {
+          card._element.remove();
+        } catch (err) {
+          console.error("[PopupWithConfirmation] Error removing card from DOM:", err);
+          if (butTrash) butTrash.textContent = "Error";
+          setTimeout(() => {
+            if (butTrash) butTrash.textContent = "Sí";
+          }, 1500);
+          return;
+        }
+        
+        try {
+          this.close();
+        } catch (err) {
+          console.error("[PopupWithConfirmation] Error closing popup:", err);
+        }
+        
+        if (butTrash) butTrash.textContent = "Sí";
+        this._cardToDelete = null;
       }
-      
-      try {
-        this.close();
-      } catch (err) {
-        console.error("[PopupWithConfirmation] Error closing popup:", err);
-      }
-
-      if (butTrash) butTrash.textContent = "Sí";
-      this._cardToDelete = null;
 
     } catch (err) {
       console.error("[PopupWithConfirmation] Error in _performDelete:", err);

@@ -92,12 +92,34 @@ export default class Card {
     this._handleCardClick();
   }
 
+  _isValidUrl(url) {
+    try {
+      const urlObj = new URL(url);
+      return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  }
+
   getCreateCard() {
     this._element = this._getTemplate();
     this._setEventsListener();
 
-    this._element.querySelector(".main__gallery-image").src = this._link;
-    this._element.querySelector(".main__gallery-image").alt = this._link;
+    const imgElement = this._element.querySelector(".main__gallery-image");
+    
+    // Usar directamente la URL del link
+    if (this._isValidUrl(this._link)) {
+      imgElement.src = this._link;
+      imgElement.onerror = () => {
+        imgElement.style.backgroundColor = "#e0e0e0";
+      };
+    } else {
+      imgElement.src = "";
+      imgElement.style.backgroundColor = "#e0e0e0";
+    }
+    
+    imgElement.alt = this._name || "Card image";
+    
     this._element.querySelector(".main__gallery-paragraph").textContent =
       this._name;
 

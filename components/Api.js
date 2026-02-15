@@ -17,7 +17,8 @@ export default class Api {
       if (!res.ok) throw new Error(`Error: ${res.status}`);
       return await res.json();
     } catch (err) {
-      return console.log(err);
+      console.error("[Api] Error:", err);
+      throw err;
     }
   }
   async getInitialCards() {
